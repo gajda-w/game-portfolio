@@ -47,6 +47,9 @@ light();
 // FLOOR
 generateFloor();
 
+// z loadera zrobic stala
+// rozkminic jak odpalic animacje
+
 //PORTAL
 new GLTFLoader().load("models/portal.glb", function (gltf) {
   const model = gltf.scene;
@@ -54,6 +57,18 @@ new GLTFLoader().load("models/portal.glb", function (gltf) {
     if (object.isMesh) object.castShadow = true;
   });
   model.position.set(35, 0, -35);
+
+  // const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
+  // const mixer = new THREE.AnimationMixer(model);
+  // const animationsMap: Map<string, THREE.AnimationAction> = new Map();
+
+  // gltfAnimations.forEach((a: THREE.AnimationClip) => {
+  //   animationsMap.set(a.name, mixer.clipAction(a));
+  // });
+
+  // const action = mixer.clipAction(gltfAnimations[0]);
+  // action.play();
+
   scene.add(model);
 
   const fontLoader = new FontLoader();
@@ -81,9 +96,9 @@ new GLTFLoader().load("models/portal.glb", function (gltf) {
 
 // MODEL WITH ANIMATIONS
 var characterControls: CharacterControls;
-new GLTFLoader().load("models/Soldier.glb", function (gltf) {
+new GLTFLoader().load("models/character.glb", function (gltf) {
   const model = gltf.scene;
-  model.position.set(35, 0, -30);
+  model.position.set(1, 0, 1);
   model.traverse(function (object: any) {
     if (object.isMesh) object.castShadow = true;
   });
@@ -98,6 +113,8 @@ new GLTFLoader().load("models/Soldier.glb", function (gltf) {
       animationsMap.set(a.name, mixer.clipAction(a));
     });
 
+  console.log(animationsMap);
+
   characterControls = new CharacterControls(
     model,
     mixer,
@@ -106,6 +123,16 @@ new GLTFLoader().load("models/Soldier.glb", function (gltf) {
     camera,
     "Idle"
   );
+});
+
+new GLTFLoader().load("models/phoenix_bird.glb", function (gltf) {
+  const model = gltf.scene;
+  model.scale.set(0.01, 0.01, 0.01);
+  model.traverse(function (object: any) {
+    if (object.isMesh) object.castShadow = true;
+  });
+
+  scene.add(model);
 });
 
 // CONTROL KEYS
@@ -185,9 +212,6 @@ window.addEventListener("resize", onWindowResize);
 function generateFloor() {
   // TEXTURES
   const textureLoader = new THREE.TextureLoader();
-  const placeholder = textureLoader.load(
-    "./textures/placeholder/placeholder.png"
-  );
   const sandBaseColor = textureLoader.load(
     "./textures/sand/Sand 002_COLOR.jpg"
   );
