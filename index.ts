@@ -1,7 +1,6 @@
 import { KeyDisplay } from "./utils";
 import { CharacterControls } from "./characterControls";
 import * as THREE from "three";
-import { CameraHelper } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
@@ -9,9 +8,10 @@ import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 // SCENE
 const textureLoader = new THREE.TextureLoader();
+const modelLoader = new GLTFLoader();
 const scene = new THREE.Scene();
 const sceneBackgroundTexture = textureLoader.load(
-  "textures/scene-background.png"
+  "textures/sky-background.avif"
 );
 scene.background = sceneBackgroundTexture;
 
@@ -48,12 +48,13 @@ light();
 generateFloor();
 
 //PORTAL
-new GLTFLoader().load("models/portal.glb", function (gltf) {
+modelLoader.load("models/portal.glb", function (gltf) {
   const model = gltf.scene;
   model.traverse(function (object: any) {
     if (object.isMesh) object.castShadow = true;
   });
   model.position.set(35, 0, -35);
+
   scene.add(model);
 
   const fontLoader = new FontLoader();
@@ -81,9 +82,9 @@ new GLTFLoader().load("models/portal.glb", function (gltf) {
 
 // MODEL WITH ANIMATIONS
 var characterControls: CharacterControls;
-new GLTFLoader().load("models/Soldier.glb", function (gltf) {
+modelLoader.load("models/character.glb", function (gltf) {
   const model = gltf.scene;
-  model.position.set(35, 0, -30);
+  model.position.set(1, 0, 1);
   model.traverse(function (object: any) {
     if (object.isMesh) object.castShadow = true;
   });
@@ -106,6 +107,24 @@ new GLTFLoader().load("models/Soldier.glb", function (gltf) {
     camera,
     "Idle"
   );
+});
+
+modelLoader.load("models/phoenix_bird.glb", function (gltf) {
+  const model = gltf.scene;
+  model.scale.set(0.01, 0.01, 0.01);
+  model.position.set(10, 0, 0);
+  model.traverse(function (object: any) {
+    if (object.isMesh) object.castShadow = true;
+  });
+
+  const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
+  const mixer = new THREE.AnimationMixer(model);
+
+  const flyAnimation = gltfAnimations[0];
+  const action = mixer.clipAction(flyAnimation);
+  action.play();
+
+  scene.add(model);
 });
 
 // CONTROL KEYS
@@ -185,28 +204,18 @@ window.addEventListener("resize", onWindowResize);
 function generateFloor() {
   // TEXTURES
   const textureLoader = new THREE.TextureLoader();
-  const placeholder = textureLoader.load(
-    "./textures/placeholder/placeholder.png"
-  );
-  const sandBaseColor = textureLoader.load(
-    "./textures/sand/Sand 002_COLOR.jpg"
-  );
-  const sandNormalMap = textureLoader.load("./textures/sand/Sand 002_NRM.jpg");
-  const sandHeightMap = textureLoader.load("./textures/sand/Sand 002_DISP.jpg");
-  const sandAmbientOcclusion = textureLoader.load(
-    "./textures/sand/Sand 002_OCC.jpg"
-  );
+  const floorTexture = textureLoader.load("./textures/floor/floor.avif");
 
   const WIDTH = 80;
   const LENGTH = 80;
 
   const geometry = new THREE.PlaneGeometry(WIDTH, LENGTH, 512, 512);
   const material = new THREE.MeshStandardMaterial({
-    map: sandBaseColor,
-    normalMap: sandNormalMap,
-    displacementMap: sandHeightMap,
+    map: floorTexture,
+    normalMap: floorTexture,
+    displacementMap: floorTexture,
     displacementScale: 0.1,
-    aoMap: sandAmbientOcclusion,
+    aoMap: floorTexture,
   });
   wrapAndRepeatTexture(material.map);
   wrapAndRepeatTexture(material.normalMap);
@@ -219,14 +228,13 @@ function generateFloor() {
   floor.rotation.x = -Math.PI / 2;
   scene.add(floor);
 }
-
 function wrapAndRepeatTexture(map: THREE.Texture) {
   map.wrapS = map.wrapT = THREE.RepeatWrapping;
   map.repeat.x = map.repeat.y = 10;
 }
 
 function light() {
-  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+  scene.add(new THREE.AmbientLight(0xffffff, 1));
 
   const dirLight = new THREE.DirectionalLight(0xffffff, 1);
   dirLight.position.set(-60, 100, -10);
