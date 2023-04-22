@@ -2,16 +2,19 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Wojciech Gajda</title>
+    <title>Character Selection</title>
     <style>
       body {
         margin: 0px;
-        background-color: black;
+        background-image: url("./img/background.jpeg");
+        overflow: hidden;
       }
-      p {
-        color: white;
-        font-size: 30px;
+      h1 {
+        color: #f7d4b4;
+        font-size: 50px;
+        font-family: "Almendra Display", serif;
         text-align: center;
+        text-shadow: 2px 2px #8b0000;
       }
       .container {
         display: flex;
@@ -21,8 +24,8 @@
       }
 
       .character-box {
-        width: 400px;
-        height: 400px;
+        width: 40vh;
+        height: 40vh;
         background-color: black;
         margin: 10px;
         background-size: cover;
@@ -37,7 +40,6 @@
         background-size: 115%;
         box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.8);
       }
-
 
       #female-warrior {
         background-image: url("./img/female-warrior-avatar.jpeg");
@@ -54,17 +56,86 @@
       #male-assasin {
         background-image: url("./img/male-assasin-avatar.jpeg");
       }
+
+      .login-screen {
+        position: absolute;
+        /* background: rgba(0, 0, 0, 1); */
+
+        background: linear-gradient(
+          to bottom,
+          #434343 0%,
+          rgba(0, 0, 0, 0.95) 100%
+        );
+
+        width: 90vw;
+        height: 90vh;
+
+        top: 50;
+        left: 50%;
+        transform: translateX(-50%);
+
+        border: 2px solid #f7d4b4;
+        border-radius: 5px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      .login-screen p {
+        color: #f7d4b4;
+        font-size: 20px;
+        font-family: "Almendra Display", serif;
+        margin: 20px;
+      }
+
+      .login-screen button {
+        background-color: #8b0000;
+        color: #f7d4b4;
+        border: none;
+        padding: 10px 20px;
+        font-size: 20px;
+        font-family: "Almendra Display", serif;
+        border-radius: 5px;
+        cursor: pointer;
+        text-shadow: 2px 2px #000;
+      }
+
+      .login-screen button:hover {
+        background-color: #f7d4b4;
+        color: #8b0000;
+        text-shadow: none;
+      }
     </style>
   </head>
   <body>
-    <p>Select your character</p>
-    <div class="container" id="selection">
-      <div class="character-box" id="female-warrior"></div>
-      <div class="character-box" id="male-assasin"></div>
+    <div class="login-screen">
+      <p>
+        Welcome to my website, which serves as my portfolio designed in the
+        style of a role-playing game. On this site, you will find a selection of
+        my projects and skills, as well as information about me and my
+        professional experience. As a passionate gamer and web developer, I've
+        combined my two interests to create this unique portfolio. The design
+        and functionality are inspired by RPG games, with character selection
+        screens and interactive elements that make browsing through my work more
+        engaging. I hope you enjoy exploring my website and getting to know me
+        better. Don't hesitate to contact me if you have any questions or want
+        to work together on a project.
+      </p>
+      <button id="start-button">START</button>
     </div>
-    <div class="container" id="selection">
-      <div class="character-box" id="female-archer"></div>
-      <div class="character-box" id="male-warrior"></div>
+    <div>
+      <h1>Select your character</h1>
+      <div class="container" id="selection">
+        <div class="character-box" id="female-warrior"></div>
+        <div class="character-box" id="male-assasin"></div>
+      </div>
+      <div class="container" id="selection">
+        <div class="character-box" id="female-archer"></div>
+        <div class="character-box" id="male-warrior"></div>
+      </div>
     </div>
     <script type="module" src="characterSelection.ts"></script>
   </body>
