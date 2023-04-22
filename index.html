@@ -6,10 +6,66 @@
     <style>
       body {
         margin: 0px;
+        background-color: black;
+      }
+      p {
+        color: white;
+        font-size: 30px;
+        text-align: center;
+      }
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .character-box {
+        width: 400px;
+        height: 400px;
+        background-color: black;
+        margin: 10px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        background-size: 100%;
+        transition: background-size 0.5s ease-in-out;
+      }
+
+      .character-box:hover {
+        background-size: 115%;
+        box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.8);
+      }
+
+
+      #female-warrior {
+        background-image: url("./img/female-warrior-avatar.jpeg");
+      }
+
+      #female-archer {
+        background-image: url("./img/female-archer-avatar.jpeg");
+      }
+
+      #male-warrior {
+        background-image: url("./img/male-warrior-avatar.jpeg");
+      }
+
+      #male-assasin {
+        background-image: url("./img/male-assasin-avatar.jpeg");
       }
     </style>
   </head>
   <body>
-    <script type="module" src="index.ts"></script>
+    <p>Select your character</p>
+    <div class="container" id="selection">
+      <div class="character-box" id="female-warrior"></div>
+      <div class="character-box" id="male-assasin"></div>
+    </div>
+    <div class="container" id="selection">
+      <div class="character-box" id="female-archer"></div>
+      <div class="character-box" id="male-warrior"></div>
+    </div>
+    <script type="module" src="characterSelection.ts"></script>
   </body>
 </html>

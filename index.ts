@@ -130,9 +130,10 @@ modelLoader.load("models/fence_wood.glb", function (gltf) {
   }
 });
 
+const chooseCharacter = localStorage.getItem("character");
 // MODEL WITH ANIMATIONS
 var characterControls: CharacterControls;
-modelLoader.load("models/character.glb", function (gltf) {
+modelLoader.load(`models/${chooseCharacter}.glb`, function (gltf) {
   const model = gltf.scene;
   model.traverse(function (object: any) {
     if (object.isMesh) object.castShadow = true;
