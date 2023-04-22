@@ -80,11 +80,60 @@ modelLoader.load("models/portal.glb", function (gltf) {
   });
 });
 
+modelLoader.load("models/fence_wood.glb", function (gltf) {
+  const model = gltf.scene;
+  model.position.set(-20, 0, -39.8);
+  scene.add(model);
+  model.rotation.y = Math.PI / 2.62;
+
+  for (let i = -10; i < 10; i++) {
+    const fenceClone = model.clone();
+    fenceClone.position.x = i * 4;
+
+    scene.add(fenceClone);
+  }
+
+  const fenceEnds = model.clone();
+  fenceEnds.position.set(35.8, 0, 39.8);
+  fenceEnds.rotation.y = Math.PI / 2.62;
+  scene.add(fenceEnds);
+
+  for (let i = -10; i < 10; i++) {
+    const fenceClone = fenceEnds.clone();
+    fenceClone.position.x = i * 4;
+
+    scene.add(fenceClone);
+  }
+
+  const fenceEnds2 = model.clone();
+  fenceEnds2.position.set(40, 0, 39.5);
+  fenceEnds2.rotation.y = Math.PI / 1.14;
+  scene.add(fenceEnds2);
+
+  for (let i = -10; i < 10; i++) {
+    const fenceClone = fenceEnds2.clone();
+    fenceClone.position.z = i * 4;
+
+    scene.add(fenceClone);
+  }
+
+  const fenceEnds3 = model.clone();
+  fenceEnds3.position.set(-39.8, 0, -36);
+  fenceEnds3.rotation.y = Math.PI / 1.14;
+  scene.add(fenceEnds3);
+
+  for (let i = -10; i < 10; i++) {
+    const fenceClone = fenceEnds3.clone();
+    fenceClone.position.z = i * 4;
+
+    scene.add(fenceClone);
+  }
+});
+
 // MODEL WITH ANIMATIONS
 var characterControls: CharacterControls;
 modelLoader.load("models/character.glb", function (gltf) {
   const model = gltf.scene;
-  model.position.set(39, 0, -39);
   model.traverse(function (object: any) {
     if (object.isMesh) object.castShadow = true;
   });
@@ -171,12 +220,12 @@ function animate() {
       if (!isCharacterOutsideFloor) {
         characterControls.model.position.set(
           characterControls.model.position.x < 0
-            ? characterControls.model.position.x + 0.5
-            : characterControls.model.position.x - 0.5,
+            ? characterControls.model.position.x + 0.15
+            : characterControls.model.position.x - 0.15,
           0,
           characterControls.model.position.z < 0
-            ? characterControls.model.position.z + 0.5
-            : characterControls.model.position.z - 0.5
+            ? characterControls.model.position.z + 0.15
+            : characterControls.model.position.z - 0.15
         );
       }
     }
@@ -238,6 +287,7 @@ function generateFloor() {
   floor.rotation.x = -Math.PI / 2;
   scene.add(floor);
 }
+
 function wrapAndRepeatTexture(map: THREE.Texture) {
   map.wrapS = map.wrapT = THREE.RepeatWrapping;
   map.repeat.x = map.repeat.y = 10;
