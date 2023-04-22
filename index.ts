@@ -84,7 +84,7 @@ modelLoader.load("models/portal.glb", function (gltf) {
 var characterControls: CharacterControls;
 modelLoader.load("models/character.glb", function (gltf) {
   const model = gltf.scene;
-  model.position.set(1, 0, 1);
+  model.position.set(39, 0, -39);
   model.traverse(function (object: any) {
     if (object.isMesh) object.castShadow = true;
   });
@@ -107,24 +107,6 @@ modelLoader.load("models/character.glb", function (gltf) {
     camera,
     "Idle"
   );
-});
-
-modelLoader.load("models/phoenix_bird.glb", function (gltf) {
-  const model = gltf.scene;
-  model.scale.set(0.01, 0.01, 0.01);
-  model.position.set(10, 0, 0);
-  model.traverse(function (object: any) {
-    if (object.isMesh) object.castShadow = true;
-  });
-
-  const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
-  const mixer = new THREE.AnimationMixer(model);
-
-  const flyAnimation = gltfAnimations[0];
-  const action = mixer.clipAction(flyAnimation);
-  action.play();
-
-  scene.add(model);
 });
 
 // CONTROL KEYS
@@ -153,6 +135,8 @@ document.addEventListener(
 
 const clock = new THREE.Clock();
 let isCharacterInPortal = false;
+let isCharacterOutsideFloor = false;
+
 // ANIMATE
 function animate() {
   let mixerUpdateDelta = clock.getDelta();
@@ -164,9 +148,15 @@ function animate() {
       new THREE.Vector3(36, 5, -37) // upper bound
     );
 
+    const floorEnterBoundingBox = new THREE.Box3(
+      new THREE.Vector3(-39, 0, -39), // lower bound
+      new THREE.Vector3(39, 5, 39) // upper bound
+    );
+
     const characterBoundingBox = new THREE.Box3().setFromObject(
       characterControls.model
     );
+
     if (portalEnterBoundingBox.intersectsBox(characterBoundingBox)) {
       if (!isCharacterInPortal) {
         window.open("https://lunarsoundstudio.pl/", "_blank");
@@ -177,12 +167,32 @@ function animate() {
       isCharacterInPortal = false;
     }
 
+    if (!floorEnterBoundingBox.intersectsBox(characterBoundingBox)) {
+      if (!isCharacterOutsideFloor) {
+        characterControls.model.position.set(
+          characterControls.model.position.x < 0
+            ? characterControls.model.position.x + 0.5
+            : characterControls.model.position.x - 0.5,
+          0,
+          characterControls.model.position.z < 0
+            ? characterControls.model.position.z + 0.5
+            : characterControls.model.position.z - 0.5
+        );
+      }
+    }
+
     // portal enter position helper
     // const portalEnterBoxHelper = new THREE.Box3Helper(
     //   portalEnterBoundingBox,
     //   0xffff00
     // );
     // scene.add(portalEnterBoxHelper);
+
+    // const floorBoxHelper = new THREE.Box3Helper(
+    //   floorEnterBoundingBox,
+    //   0xffff00
+    // );
+    // scene.add(floorBoxHelper);
   }
 
   orbitControls.update();
