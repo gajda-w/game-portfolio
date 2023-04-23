@@ -47,6 +47,10 @@ light();
 // FLOOR
 generateFloor();
 
+// SOUND
+const listener = new THREE.AudioListener();
+const audioLoader = new THREE.AudioLoader();
+
 //PORTAL
 modelLoader.load("models/portal.glb", function (gltf) {
   const model = gltf.scene;
@@ -211,6 +215,13 @@ document.addEventListener(
 const clock = new THREE.Clock();
 let isCharacterInPortal = false;
 let isCharacterOutsideFloor = false;
+let isFireplaceAudioPlaying = false;
+
+let fireplaceSound = new THREE.Audio(listener);
+audioLoader.load("./public/audio/fireplace-sound.mp3", function (buffer) {
+  fireplaceSound = new THREE.Audio(listener);
+  fireplaceSound.setBuffer(buffer);
+});
 
 // ANIMATE
 function animate() {
@@ -226,6 +237,11 @@ function animate() {
     const floorEnterBoundingBox = new THREE.Box3(
       new THREE.Vector3(-39, 0, -39), // lower bound
       new THREE.Vector3(39, 5, 39) // upper bound
+    );
+
+    const campingEnterBoundingBox = new THREE.Box3(
+      new THREE.Vector3(-10, 0, -10), // lower bound
+      new THREE.Vector3(10, 5, 10) // upper bound
     );
 
     const characterBoundingBox = new THREE.Box3().setFromObject(
@@ -256,18 +272,23 @@ function animate() {
       }
     }
 
-    // portal enter position helper
-    // const portalEnterBoxHelper = new THREE.Box3Helper(
-    //   portalEnterBoundingBox,
-    //   0xffff00
-    // );
-    // scene.add(portalEnterBoxHelper);
+    if (campingEnterBoundingBox.intersectsBox(characterBoundingBox)) {
+      if (!isFireplaceAudioPlaying) {
+        isFireplaceAudioPlaying = true;
+        fireplaceSound.play();
+        fireplaceSound.setLoop(true);
+        fireplaceSound.setVolume(10);
+      }
+    } else {
+      fireplaceSound.stop();
+      isFireplaceAudioPlaying = false;
+    }
 
-    // const floorBoxHelper = new THREE.Box3Helper(
-    //   floorEnterBoundingBox,
-    //   0xffff00
-    // );
-    // scene.add(floorBoxHelper);
+    const campingBoxHelper = new THREE.Box3Helper(
+      campingEnterBoundingBox,
+      0xffff00
+    );
+    scene.add(campingBoxHelper);
   }
 
   orbitControls.update();
@@ -334,5 +355,5 @@ function light() {
   dirLight.shadow.mapSize.width = 4096;
   dirLight.shadow.mapSize.height = 4096;
   scene.add(dirLight);
-  scene.add(new THREE.CameraHelper(dirLight.shadow.camera));
+  // scene.add(new THREE.CameraHelper(dirLight.shadow.camera));
 }
