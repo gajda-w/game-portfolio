@@ -218,7 +218,7 @@ let isCharacterOutsideFloor = false;
 let isFireplaceAudioPlaying = false;
 
 let fireplaceSound = new THREE.Audio(listener);
-audioLoader.load("./public/audio/fireplace-sound.mp3", function (buffer) {
+audioLoader.load("./audio/fireplace-sound.mp3", function (buffer) {
   fireplaceSound = new THREE.Audio(listener);
   fireplaceSound.setBuffer(buffer);
 });

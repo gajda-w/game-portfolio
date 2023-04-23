@@ -4,12 +4,11 @@ const loginScreen = document.getElementsByClassName(
 )[0] as unknown as HTMLElement;
 startButton?.addEventListener("click", () => {
   const audio = new Audio("./audio/login-screen-music-pack.mp3");
-  audio.play();
-  console.log(audio);
   audio.loop = true;
   audio.autoplay = true;
   audio.controls = true;
   audio.volume = 0.5;
+  audio.play();
   setTimeout(() => {
     loginScreen.style.display = "none";
   }, 1000);
@@ -18,6 +17,7 @@ startButton?.addEventListener("click", () => {
 const playRandomSound = (sounds: HTMLAudioElement[]) => {
   const randomIndex = Math.floor(Math.random() * sounds.length);
   const audio = sounds[randomIndex];
+  audio.volume = 0.5;
   audio.play();
 };
 
@@ -78,4 +78,13 @@ const femaleArcherSound1 = new Audio(
 
 femaleArcherChoose?.addEventListener("mouseover", () => {
   playRandomSound([femaleArcherSound1]);
+});
+
+const parchment = document.querySelectorAll(".parchment");
+const parchmentAudio = new Audio("./audio/parchment-sound.mov");
+
+parchment.forEach((elem) => {
+  elem.addEventListener("mouseover", () => {
+    parchmentAudio.play();
+  });
 });
