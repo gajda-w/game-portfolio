@@ -170,21 +170,21 @@ modelLoader.load("models/camping.glb", function (gltf) {
   model.traverse(function (object: any) {
     if (object.isMesh) object.castShadow = true;
   });
-  const animations = gltf.animations;
+  // const animations = gltf.animations;
   scene.add(model);
 
-  const mixer = new THREE.AnimationMixer(model);
+  // const mixer = new THREE.AnimationMixer(model);
 
-  for (let i = 0; i < animations.length; i++) {
-    mixer.clipAction(animations[i]).play();
-  }
+  // for (let i = 0; i < animations.length; i++) {
+  //   mixer.clipAction(animations[i]).play();
+  // }
 
-  function render() {
-    requestAnimationFrame(render);
-    mixer.update(clock.getDelta());
-    renderer.render(scene, camera);
-  }
-  render();
+  // function render() {
+  //   requestAnimationFrame(render);
+  //   mixer.update(clock.getDelta());
+  //   renderer.render(scene, camera);
+  // }
+  // render();
 });
 
 // CONTROL KEYS
