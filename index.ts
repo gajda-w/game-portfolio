@@ -22,9 +22,9 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.y = 5;
-camera.position.z = 5;
-camera.position.x = 0;
+camera.position.y = 3;
+camera.position.z = 13;
+camera.position.x = 15;
 
 // RENDERER
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -130,7 +130,9 @@ modelLoader.load("models/fence_wood.glb", function (gltf) {
   }
 });
 
-const chooseCharacter = localStorage.getItem("character");
+let chooseCharacter = localStorage.getItem("character");
+if (!chooseCharacter) chooseCharacter = "female-warrior";
+
 // MODEL WITH ANIMATIONS
 var characterControls: CharacterControls;
 modelLoader.load(`models/${chooseCharacter}.glb`, function (gltf) {
@@ -138,6 +140,7 @@ modelLoader.load(`models/${chooseCharacter}.glb`, function (gltf) {
   model.traverse(function (object: any) {
     if (object.isMesh) object.castShadow = true;
   });
+  model.position.set(5, 0, 5);
   scene.add(model);
 
   const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
@@ -157,6 +160,28 @@ modelLoader.load(`models/${chooseCharacter}.glb`, function (gltf) {
     camera,
     "Idle"
   );
+});
+
+modelLoader.load("models/camping.glb", function (gltf) {
+  const model = gltf.scene;
+  model.traverse(function (object: any) {
+    if (object.isMesh) object.castShadow = true;
+  });
+  const animations = gltf.animations;
+  scene.add(model);
+
+  const mixer = new THREE.AnimationMixer(model);
+
+  for (let i = 0; i < animations.length; i++) {
+    mixer.clipAction(animations[i]).play();
+  }
+
+  function render() {
+    requestAnimationFrame(render);
+    mixer.update(clock.getDelta());
+    renderer.render(scene, camera);
+  }
+  render();
 });
 
 // CONTROL KEYS
@@ -295,10 +320,10 @@ function wrapAndRepeatTexture(map: THREE.Texture) {
 }
 
 function light() {
-  scene.add(new THREE.AmbientLight(0xffffff, 1));
+  scene.add(new THREE.AmbientLight(0xffffff, 2));
 
   const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-  dirLight.position.set(-60, 100, -10);
+  dirLight.position.set(-60, 30, -10);
   dirLight.castShadow = true;
   dirLight.shadow.camera.top = 50;
   dirLight.shadow.camera.bottom = -50;
@@ -309,5 +334,5 @@ function light() {
   dirLight.shadow.mapSize.width = 4096;
   dirLight.shadow.mapSize.height = 4096;
   scene.add(dirLight);
-  // scene.add(new THREE.CameraHelper(dirLight.shadow.camera));
+  scene.add(new THREE.CameraHelper(dirLight.shadow.camera));
 }
