@@ -16,6 +16,14 @@
         text-align: center;
         text-shadow: 2px 2px #8b0000;
       }
+
+      h4 {
+        color: #f7d4b4;
+        font-size: 30px;
+        font-family: "Almendra Display", serif;
+        text-shadow: 2px 2px #8b0000;
+        text-align: center;
+      }
       .container {
         display: flex;
         justify-content: center;
@@ -59,7 +67,7 @@
 
       .login-screen {
         position: absolute;
-        /* background: rgba(0, 0, 0, 1); */
+        z-index: 1;
 
         background: linear-gradient(
           to bottom,
@@ -84,11 +92,12 @@
         text-align: center;
       }
 
-      .login-screen p {
+      .text {
         color: #f7d4b4;
         font-size: 20px;
         font-family: "Almendra Display", serif;
         margin: 20px;
+        line-height: 1.5;
       }
 
       .login-screen button {
@@ -101,6 +110,7 @@
         border-radius: 5px;
         cursor: pointer;
         text-shadow: 2px 2px #000;
+        margin: 20px;
       }
 
       .login-screen button:hover {
@@ -108,11 +118,104 @@
         color: #8b0000;
         text-shadow: none;
       }
+
+      .left-menu {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: -200px;
+        width: 300px;
+        height: 45vh;
+        background: linear-gradient(
+          to bottom,
+          #434343 0%,
+          rgba(0, 0, 0, 0.95) 100%
+        );
+        border: 2px solid #f7d4b4;
+        border-radius: 5px;
+        overflow: scroll;
+        transition: all 0.5s ease-in-out;
+      }
+
+      .left-menu p {
+        opacity: 0;
+        transition: all 0.5s ease-in-out;
+      }
+
+      .about-me-text {
+        writing-mode: vertical-rl;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate(0, -50%);
+        transition: all 0.5s ease-in-out;
+      }
+
+      .left-menu:hover {
+        left: 0;
+        height: 90vh;
+      }
+
+      .left-menu:hover p {
+        opacity: 1;
+      }
+
+      .left-menu:hover .about-me-text {
+        position: relative;
+        writing-mode: horizontal-tb;
+        top: 0;
+      }
+
+      .right-menu {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: -200px;
+        width: 300px;
+        height: 45vh;
+        background: linear-gradient(
+          to bottom,
+          #434343 0%,
+          rgba(0, 0, 0, 0.95) 100%
+        );
+        border: 2px solid #f7d4b4;
+        border-radius: 5px;
+        overflow: scroll;
+        transition: all 0.5s ease-in-out;
+      }
+
+      .right-menu p {
+        opacity: 0;
+        transition: all 0.5s ease-in-out;
+      }
+
+      .about-website-text {
+        writing-mode: vertical-rl;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: all 0.5s ease-in-out;
+      }
+
+      .right-menu:hover {
+        right: 0;
+        height: 90vh;
+      }
+
+      .right-menu:hover p {
+        opacity: 1;
+      }
+
+      .right-menu:hover .about-website-text {
+        position: relative;
+        writing-mode: horizontal-tb;
+        top: 0;
+      }
     </style>
   </head>
   <body>
     <div class="login-screen">
-      <p>
+      <p class="text">
         Welcome to my website, which serves as my portfolio designed in the
         style of a role-playing game. On this site, you will find a selection of
         my projects and skills, as well as information about me and my
@@ -125,6 +228,39 @@
         to work together on a project.
       </p>
       <button id="start-button">START</button>
+    </div>
+    <div class="left-menu">
+      <h4 class="about-me-text">About me</h4>
+      <p class="text">
+        Hi there! My name is Wojtek and I have been working as a frontend
+        developer for two years. From the beginning of my career, I have always
+        strived to make my projects unique and stand out from the rest. I enjoy
+        what I do and constantly work to improve my skills to create better
+        projects. Outside of work, I am a big fan of RPG games and love spending
+        time playing different titles. In my personal life, I am a calm person
+        dedicated to my passion for Brazilian jiu-jitsu. It's not just a way to
+        spend my free time, but also a way to maintain balance and fitness. I
+        have a dog named Loki whom I spend every free moment with. I love our
+        walks and playtime together. Loki also accompanies me during work, so
+        you can often see him during my video conferences. Thanks for taking an
+        interest in me!
+      </p>
+    </div>
+    <div class="right-menu">
+      <h4 class="about-website-text">About website</h4>
+      <p class="text">
+        The portfolio I created is not just a showcase of my approach to web
+        design. It's also an interactive game inspired by old RPG games, where
+        the user can explore the map and get to know my projects, skills, and
+        work style. I wanted my portfolio to be unique and creative, so I used
+        different solutions than those found in most portfolios. I used
+        technologies such as Typescript, HTML, CSS, and ThreeJS, but to achieve
+        an even better effect, I used artificial intelligence to generate
+        character graphics, sounds, and avatars. This made my website more
+        unique and attractive. If you're interested in my approach to web design
+        and would like to learn more details, I'd be happy to talk to you about
+        it.
+      </p>
     </div>
     <div>
       <h1>Select your character</h1>
