@@ -1,4 +1,3 @@
-import { KeyDisplay } from "./utils";
 import { CharacterControls } from "./characterControls";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -190,11 +189,9 @@ modelLoader.load("models/camping.glb", function (gltf) {
 
 // CONTROL KEYS
 let keysPressed = {};
-const keyDisplayQueue = new KeyDisplay();
 document.addEventListener(
   "keydown",
   (event) => {
-    keyDisplayQueue.down(event.key);
     if (event.shiftKey && characterControls) {
       characterControls.switchRunToggle();
     } else {
@@ -206,7 +203,6 @@ document.addEventListener(
 document.addEventListener(
   "keyup",
   (event) => {
-    keyDisplayQueue.up(event.key);
     (keysPressed as any)[event.key.toLowerCase()] = false;
   },
   false
@@ -303,7 +299,7 @@ function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  keyDisplayQueue.updatePosition();
+  // keyDisplayQueue.updatePosition();
 }
 window.addEventListener("resize", onWindowResize);
 

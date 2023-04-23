@@ -51,9 +51,6 @@ export class CharacterControls {
   }
 
   public update(delta: number, keysPressed: any) {
-    // check available animations
-    // console.log("Available animations:", Array.from(this.animationsMap.keys()));
-
     const directionPressed = DIRECTIONS.some((key) => keysPressed[key] == true);
 
     var play = "";
