@@ -12,6 +12,8 @@ export class CharacterControls {
   // state
   toggleRun: boolean = true;
   currentAction: string;
+  isActionChanging: boolean = false;
+  isAttackAnimationPlaying: boolean = false;
 
   // temporary data
   walkDirection = new THREE.Vector3();
@@ -47,7 +49,25 @@ export class CharacterControls {
   }
 
   public switchRunToggle() {
-    this.toggleRun = !this.toggleRun;
+    if (!this.isActionChanging) {
+      this.isActionChanging = true;
+      this.toggleRun = !this.toggleRun;
+      setTimeout(() => {
+        this.isActionChanging = false;
+      }, 500);
+    }
+  }
+
+  public attack() {
+    if (!this.isAttackAnimationPlaying) {
+      this.isAttackAnimationPlaying = true;
+      const slashAnimation = this.animationsMap.get("Slash");
+      slashAnimation.reset().fadeIn(this.fadeDuration).play();
+      setTimeout(() => {
+        slashAnimation.fadeOut(this.fadeDuration);
+        this.isAttackAnimationPlaying = false;
+      }, slashAnimation.getClip().duration * 1000);
+    }
   }
 
   public update(delta: number, keysPressed: any) {

@@ -194,6 +194,9 @@ document.addEventListener(
   (event) => {
     if (event.shiftKey && characterControls) {
       characterControls.switchRunToggle();
+    }
+    if (event.key === "f" && characterControls) {
+      characterControls.attack();
     } else {
       (keysPressed as any)[event.key.toLowerCase()] = true;
     }
